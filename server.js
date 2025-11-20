@@ -8,6 +8,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,10 +22,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Serve static files from public folder
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Session management
 app.use(session({
@@ -789,6 +791,8 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`\n🚀 Nutri-Genie server running on http://localhost:${PORT}`);
     console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`📁 Views directory: ${path.join(__dirname, 'views')}`);
+    console.log(`📁 Public directory: ${path.join(__dirname, 'public')}`);
     console.log(`🤖 AI Status: ${model ? 'Ready' : 'Not configured (add GEMINI_API_KEY to .env)'}`);
     console.log(`\n💡 Quick Start:`);
     console.log(`   1. Visit http://localhost:${PORT}`);
