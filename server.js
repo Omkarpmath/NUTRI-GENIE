@@ -34,7 +34,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production', // Only true in production
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
 }));
@@ -194,33 +194,57 @@ app.get('/login', (req, res) => {
 
 // Login/Signup Handler
 app.post('/login', async (req, res) => {
+    console.log('👉 Login/Signup request received:', req.body);
     try {
         const { email, password, action } = req.body;
 
         if (action === 'signup') {
+            console.log('📝 Processing signup for:', email);
             // Simple signup (In production, hash passwords!)
             const existingUser = await User.findOne({ email });
             if (existingUser) {
+                console.log('❌ Signup failed: Email already exists');
                 return res.render('login', { error: 'Email already exists' });
             }
 
             const newUser = new User({ email, password, name: email.split('@')[0] });
             await newUser.save();
+            console.log('✅ New user created:', newUser.email);
 
             req.session.user = { email, name: newUser.name };
-            res.redirect('/input');
+            console.log('🔐 Session created for new user');
+
+            req.session.save((err) => {
+                if (err) {
+                    console.error('❌ Session save error:', err);
+                    return res.render('login', { error: 'Session error' });
+                }
+                console.log('🔄 Redirecting to /input');
+                res.redirect('/input');
+            });
         } else {
             // Login
+            console.log('🔑 Processing login for:', email);
             const user = await User.findOne({ email, password });
             if (!user) {
+                console.log('❌ Login failed: Invalid credentials');
                 return res.render('login', { error: 'Invalid email or password' });
             }
 
             req.session.user = { email, name: user.name };
-            res.redirect('/input');
+            console.log('✅ User found, session created');
+
+            req.session.save((err) => {
+                if (err) {
+                    console.error('❌ Session save error:', err);
+                    return res.render('login', { error: 'Session error' });
+                }
+                console.log('🔄 Redirecting to /input');
+                res.redirect('/input');
+            });
         }
     } catch (error) {
-        console.error('Login error:', error);
+        console.error('❌ Login error:', error);
         res.render('login', { error: 'An error occurred' });
     }
 });
