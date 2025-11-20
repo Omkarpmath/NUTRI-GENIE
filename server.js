@@ -41,12 +41,37 @@ app.use(session({
 // MONGODB CONNECTION
 // ============================================
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/nutrigenie')
-    .then(() => console.log('✅ MongoDB connected successfully'))
+const mongooseOptions = {
+    serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+    socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+};
+
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/nutrigenie', mongooseOptions)
+    .then(() => {
+        console.log('✅ MongoDB connected successfully');
+        console.log(`📊 Database: ${mongoose.connection.name}`);
+    })
     .catch(err => {
         console.error('❌ MongoDB connection error:', err.message);
-        console.log('💡 Make sure MongoDB is running or check your MONGODB_URI in .env');
+        console.log('💡 Troubleshooting steps:');
+        console.log('   1. Check your MONGODB_URI in .env file');
+        console.log('   2. Verify your MongoDB Atlas credentials are correct');
+        console.log('   3. Ensure your IP address is whitelisted in MongoDB Atlas');
+        console.log('   4. Check if your database user has proper permissions');
     });
+
+// Handle MongoDB connection events
+mongoose.connection.on('connected', () => {
+    console.log('🔗 Mongoose connected to MongoDB');
+});
+
+mongoose.connection.on('error', (err) => {
+    console.error('❌ Mongoose connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+    console.log('⚠️  Mongoose disconnected from MongoDB');
+});
 
 // ============================================
 // MONGOOSE SCHEMAS & MODELS
