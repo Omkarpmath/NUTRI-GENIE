@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutri-Genie - Your AI-Powered Personal Health Consultant</title>
+    <meta name="description"
+        content="Transform your health journey with Nutri-Genie, an AI-powered personal health consultant that provides instant metabolic analysis, hyper-personalized meal and workout plans, and persistent health tracking powered by Gemini AI.">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .gradient-bg-alt {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .gradient-bg-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dark-glass-effect {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-pattern {
+            background-color: #0f0f23;
+            background-image:
+                radial-gradient(at 20% 30%, hsla(260, 77%, 50%, 0.3) 0px, transparent 50%),
+                radial-gradient(at 80% 70%, hsla(280, 77%, 50%, 0.3) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, hsla(240, 77%, 30%, 0.2) 0px, transparent 50%);
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(102, 126, 234, 0.8);
+            }
+        }
+
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tech-badge {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .tech-badge:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.4) 0%, rgba(118, 75, 162, 0.4) 100%);
+            border-color: rgba(102, 126, 234, 0.6);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-effect">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center">
+                        <span class="text-white text-2xl">🧞</span>
+                    </div>
+                    <span class="text-2xl font-bold gradient-text">Nutri-Genie</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#features" class="text-gray-700 hover:text-purple-600 font-medium transition">Features</a>
+                    <a href="#tech" class="text-gray-700 hover:text-purple-600 font-medium transition">Technology</a>
+                    <a href="#how-it-works" class="text-gray-700 hover:text-purple-600 font-medium transition">How It
+                        Works</a>
+                </div>
+                <a href="/login"
+                    class="gradient-bg text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition transform hover:scale-105">
+                    Get Started Free
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-pattern pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <!-- Animated Background Elements -->
+        <div
+            class="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse">
+        </div>
+        <div class="absolute top-40 right-10 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
+            style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-20 left-1/2 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
+            style="animation-delay: 2s;"></div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center fade-in">
+                <div class="inline-flex items-center space-x-2 px-4 py-2 dark-glass-effect rounded-full mb-8">
+                    <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                    <span class="text-gray-300 text-sm font-medium">Powered by Gemini 1.5 Flash AI</span>
+                </div>
+
+                <h1 class="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
+                    Your Personal Health<br />
+                    <span class="gradient-text bg-gradient-to-r from-purple-400 to-pink-400"
+                        style="-webkit-text-fill-color: transparent;">Revolution Starts Here</span>
+                </h1>
+
+                <p class="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+                    Say goodbye to generic fitness advice and confusing calculations.
+                    <strong class="text-white">Nutri-Genie</strong> is your AI-powered health companion that delivers
+                    <strong class="text-purple-400">instant metabolic insights</strong>,
+                    <strong class="text-pink-400">personalized meal plans</strong>, and
+                    <strong class="text-blue-400">smart workout routines</strong> — all tailored just for you.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="/login"
+                        class="gradient-bg-alt text-white px-10 py-5 rounded-full text-lg font-bold hover:shadow-2xl transition transform hover:scale-105 pulse-glow">
+                        🚀 Start Your Journey Free
+                    </a>
+                    <button
+                        class="dark-glass-effect text-white px-10 py-5 rounded-full text-lg font-semibold hover:shadow-lg transition transform hover:scale-105">
+                        📺 Watch Demo
+                    </button>
+                </div>
+
+                <div class="mt-16 flex flex-wrap justify-center gap-8 text-gray-300">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span>No Credit Card Required</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span>Instant Setup</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span>100% Personalized</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+                    Tired of <span class="gradient-text">One-Size-Fits-All</span> Health Advice?
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Traditional fitness apps fall short. Here's what's holding you back from achieving your health
+                    goals.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Problem 1 -->
+                <div class="bg-red-50 border-2 border-red-200 rounded-2xl p-8 hover-lift transform transition">
+                    <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mb-6">
+                        <span class="text-3xl">❌</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Generic, Cookie-Cutter Plans</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Most apps give you the same bland meal plans and workouts as everyone else.
+                        Your body is unique — why should your health plan be generic?
+                    </p>
+                </div>
+
+                <!-- Problem 2 -->
+                <div class="bg-orange-50 border-2 border-orange-200 rounded-2xl p-8 hover-lift transform transition">
+                    <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mb-6">
+                        <span class="text-3xl">🤯</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Confusing Manual Calculations</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        BMR? TDEE? Macros? Stop wasting hours with complex formulas and spreadsheets.
+                        Health tracking shouldn't feel like solving a math test.
+                    </p>
+                </div>
+
+                <!-- Problem 3 -->
+                <div class="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-8 hover-lift transform transition">
+                    <div class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mb-6">
+                        <span class="text-3xl">📉</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Zero Long-Term Tracking</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Your progress vanishes the moment you close the app. Without persistent tracking,
+                        you can't see how far you've come or optimize your journey.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+                    Meet <span class="gradient-text">Nutri-Genie</span> — Your Always-On Health Companion
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Powered by cutting-edge AI and built on a robust tech stack, Nutri-Genie transforms how you approach
+                    health and fitness.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center flex-shrink-0">
+                            <span class="text-2xl">⚡</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Instant Metabolic Analysis</h3>
+                            <p class="text-gray-700 leading-relaxed">
+                                Get your BMR and TDEE calculated in seconds. Nutri-Genie crunches the numbers so you
+                                can focus on what matters — taking action and seeing results.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div
+                            class="w-12 h-12 gradient-bg-alt rounded-lg flex items-center justify-center flex-shrink-0">
+                            <span class="text-2xl">🎯</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Hyper-Personalized Plans</h3>
+                            <p class="text-gray-700 leading-relaxed">
+                                Every meal and workout is tailored to your goals, preferences, and even allergies.
+                                Gemini AI ensures you get recommendations that work for YOU — not the masses.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div
+                            class="w-12 h-12 gradient-bg-success rounded-lg flex items-center justify-center flex-shrink-0">
+                            <span class="text-2xl">📊</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Persistent Health Tracking</h3>
+                            <p class="text-gray-700 leading-relaxed">
+                                All your data is securely stored in MongoDB. Track your progress over weeks, months,
+                                and years. Watch your transformation unfold with structured, actionable insights.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="dark-glass-effect rounded-3xl p-12 text-white bg-gradient-to-br from-purple-600 to-pink-600">
+                    <h3 class="text-3xl font-bold mb-6">🧞 Your Genie Grants Three Wishes</h3>
+                    <ul class="space-y-4 text-lg">
+                        <li class="flex items-start space-x-3">
+                            <svg class="w-6 h-6 text-green-300 flex-shrink-0 mt-1" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span><strong>Wish 1:</strong> No more guessing — get precise, science-backed
+                                recommendations</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <svg class="w-6 h-6 text-green-300 flex-shrink-0 mt-1" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span><strong>Wish 2:</strong> Save hours every week with automated health planning</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <svg class="w-6 h-6 text-green-300 flex-shrink-0 mt-1" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span><strong>Wish 3:</strong> Achieve your goals faster with AI-powered optimization</span>
+                        </li>
+                    </ul>
+                    <a href="/login"
+                        class="block w-full mt-8 bg-white text-purple-600 px-8 py-4 rounded-full text-lg font-bold hover:shadow-2xl transition transform hover:scale-105 text-center">
+                        Make Your First Wish →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+                    Powerful Features, <span class="gradient-text">Zero Complexity</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Everything you need to take control of your health journey, backed by enterprise-grade technology.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div
+                    class="group bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 hover-lift border-2 border-transparent hover:border-purple-300 transition">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition transform">🧮</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Smart Calculations</h3>
+                    <p class="text-gray-700">Automated BMR, TDEE, and macro calculations based on your unique profile
+                    </p>
+                </div>
+
+                <div
+                    class="group bg-gradient-to-br from-pink-50 to-pink-100 rounded-2xl p-8 hover-lift border-2 border-transparent hover:border-pink-300 transition">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition transform">🍽️</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Custom Meal Plans</h3>
+                    <p class="text-gray-700">AI-generated meals that respect your allergies, preferences, and goals</p>
+                </div>
+
+                <div
+                    class="group bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 hover-lift border-2 border-transparent hover:border-blue-300 transition">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition transform">💪</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Workout Routines</h3>
+                    <p class="text-gray-700">Personalized exercise plans that adapt to your fitness level and schedule
+                    </p>
+                </div>
+
+                <div
+                    class="group bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-8 hover-lift border-2 border-transparent hover:border-green-300 transition">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition transform">📈</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Progress Insights</h3>
+                    <p class="text-gray-700">Visual dashboards showing your transformation over time with actionable
+                        data</p>
+                </div>
+
+                <div
+                    class="group bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-8 hover-lift border-2 border-transparent hover:border-yellow-300 transition">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition transform">🤖</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">AI Conversations</h3>
+                    <p class="text-gray-700">Chat with Gemini AI about nutrition, fitness, and health questions anytime
+                    </p>
+                </div>
+
+                <div
+                    class="group bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-2xl p-8 hover-lift border-2 border-transparent hover:border-indigo-300 transition">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition transform">🔒</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Secure Storage</h3>
+                    <p class="text-gray-700">Your health data is encrypted and safely stored in MongoDB</p>
+                </div>
+
+                <div
+                    class="group bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-8 hover-lift border-2 border-transparent hover:border-red-300 transition">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition transform">🚫</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Allergy-Safe</h3>
+                    <p class="text-gray-700">Never worry about allergens — every recommendation is filtered for safety
+                    </p>
+                </div>
+
+                <div
+                    class="group bg-gradient-to-br from-teal-50 to-teal-100 rounded-2xl p-8 hover-lift border-2 border-transparent hover:border-teal-300 transition">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition transform">🎯</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Goal-Driven</h3>
+                    <p class="text-gray-700">Whether bulking, cutting, or maintaining — your plan adapts to your goals
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section id="tech" class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 to-purple-900 text-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black mb-4">
+                    Built on <span class="bg-gradient-to-r from-purple-400 to-pink-400"
+                        style="background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Enterprise-Grade</span>
+                    Technology
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Nutri-Genie leverages modern, battle-tested technologies to deliver blazing-fast performance,
+                    unmatched reliability, and scalable AI intelligence.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <!-- Gemini AI -->
+                <div class="dark-glass-effect rounded-2xl p-8 hover-lift">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-3xl">
+                            🧠
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">Gemini 1.5 Flash</h3>
+                            <p class="text-gray-400">AI Engine</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">
+                        Google's most advanced AI model powers every recommendation, delivering
+                        lightning-fast, context-aware health insights with unparalleled accuracy.
+                    </p>
+                </div>
+
+                <!-- Node.js + Express -->
+                <div class="dark-glass-effect rounded-2xl p-8 hover-lift">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-500 rounded-xl flex items-center justify-center text-3xl">
+                            ⚙️
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">Node.js + Express</h3>
+                            <p class="text-gray-400">Backend</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">
+                        Industry-standard backend that handles thousands of requests per second
+                        with non-blocking I/O for seamless real-time interactions.
+                    </p>
+                </div>
+
+                <!-- MongoDB -->
+                <div class="dark-glass-effect rounded-2xl p-8 hover-lift">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-green-600 to-green-800 rounded-xl flex items-center justify-center text-3xl">
+                            🗄️
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">MongoDB</h3>
+                            <p class="text-gray-400">Database</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">
+                        NoSQL database that stores your health data with flexible schemas,
+                        enabling complex queries and long-term progress tracking at scale.
+                    </p>
+                </div>
+
+                <!-- EJS + Tailwind -->
+                <div class="dark-glass-effect rounded-2xl p-8 hover-lift">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center text-3xl">
+                            🎨
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">EJS + Tailwind</h3>
+                            <p class="text-gray-400">Frontend</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">
+                        Dynamic templating with utility-first CSS creates a stunning,
+                        responsive UI that looks beautiful on every device.
+                    </p>
+                </div>
+
+                <!-- Git/GitHub -->
+                <div class="dark-glass-effect rounded-2xl p-8 hover-lift">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-gray-600 to-gray-800 rounded-xl flex items-center justify-center text-3xl">
+                            📦
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">Git/GitHub</h3>
+                            <p class="text-gray-400">Version Control</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">
+                        Professional development workflow with version control, enabling
+                        rapid iteration and continuous deployment of new features.
+                    </p>
+                </div>
+
+                <!-- RESTful APIs -->
+                <div class="dark-glass-effect rounded-2xl p-8 hover-lift">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center text-3xl">
+                            🔌
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">RESTful APIs</h3>
+                            <p class="text-gray-400">Architecture</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">
+                        Clean, scalable API design ensures seamless data flow between
+                        frontend, backend, and AI engine for optimal performance.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tech Stack Badges -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <div class="tech-badge px-6 py-3 rounded-full font-semibold">Node.js v20+</div>
+                <div class="tech-badge px-6 py-3 rounded-full font-semibold">Express 4.x</div>
+                <div class="tech-badge px-6 py-3 rounded-full font-semibold">MongoDB 7.x</div>
+                <div class="tech-badge px-6 py-3 rounded-full font-semibold">Gemini 1.5 Flash</div>
+                <div class="tech-badge px-6 py-3 rounded-full font-semibold">EJS Templates</div>
+                <div class="tech-badge px-6 py-3 rounded-full font-semibold">Tailwind CSS</div>
+                <div class="tech-badge px-6 py-3 rounded-full font-semibold">Git/GitHub</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+                    Get Started in <span class="gradient-text">3 Simple Steps</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    From signup to personalized health plan in under 2 minutes. No complexity, just results.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12">
+                <!-- Step 1 -->
+                <div class="relative">
+                    <div class="text-center">
+                        <div
+                            class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center text-white text-3xl font-black mx-auto mb-6 pulse-glow">
+                            1
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Tell Us About You</h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            Share your age, weight, height, activity level, and health goals.
+                            Don't forget to mention any allergies or dietary preferences!
+                        </p>
+                    </div>
+                    <div class="hidden md:block absolute top-10 -right-6 text-4xl text-purple-300">→</div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative">
+                    <div class="text-center">
+                        <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center text-white text-3xl font-black mx-auto mb-6 pulse-glow"
+                            style="animation-delay: 0.5s;">
+                            2
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">AI Works Its Magic</h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            Gemini AI analyzes your profile, calculates your metabolic needs,
+                            and crafts a personalized plan in seconds. No manual work required!
+                        </p>
+                    </div>
+                    <div class="hidden md:block absolute top-10 -right-6 text-4xl text-purple-300">→</div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative">
+                    <div class="text-center">
+                        <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center text-white text-3xl font-black mx-auto mb-6 pulse-glow"
+                            style="animation-delay: 1s;">
+                            3
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Start Your Journey</h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            Get your custom meal plans, workout routines, and start tracking progress.
+                            Watch your health transform day by day with AI-powered insights!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-16 text-center">
+                <a href="/login"
+                    class="gradient-bg text-white px-12 py-5 rounded-full text-xl font-bold hover:shadow-2xl transition transform hover:scale-105 pulse-glow inline-block">
+                    Start Your Free Journey Now 🚀
+                </a>
+                <p class="mt-4 text-gray-600">Join thousands transforming their health with AI</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-blue-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+                    Trusted by <span class="gradient-text">Health Enthusiasts</span> Worldwide
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover-lift">
+                    <div class="flex items-center space-x-1 mb-4">
+                        <span class="text-yellow-400 text-2xl">⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed italic">
+                        "Nutri-Genie changed my life! I lost 15 pounds in 2 months with personalized meal plans.
+                        The AI actually understands my lactose intolerance and suggests amazing alternatives!"
+                    </p>
+                    <div class="flex items-center space-x-3">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white font-bold">
+                            SM
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-900">Sarah Mitchell</p>
+                            <p class="text-sm text-gray-600">Fitness Blogger</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover-lift">
+                    <div class="flex items-center space-x-1 mb-4">
+                        <span class="text-yellow-400 text-2xl">⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed italic">
+                        "As a developer, I love the tech behind this! The calculations are spot-on, and the UI is
+                        gorgeous.
+                        Finally, an app that respects my time and delivers real value."
+                    </p>
+                    <div class="flex items-center space-x-3">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-blue-400 to-teal-400 rounded-full flex items-center justify-center text-white font-bold">
+                            AK
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-900">Alex Kumar</p>
+                            <p class="text-sm text-gray-600">Software Engineer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover-lift">
+                    <div class="flex items-center space-x-1 mb-4">
+                        <span class="text-yellow-400 text-2xl">⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed italic">
+                        "The progress tracking is incredible. I can see exactly how my body responds to different meals
+                        and workouts.
+                        It's like having a personal nutritionist and trainer in my pocket!"
+                    </p>
+                    <div class="flex items-center space-x-3">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-green-400 to-blue-400 rounded-full flex items-center justify-center text-white font-bold">
+                            JL
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-900">Jessica Lee</p>
+                            <p class="text-sm text-gray-600">Marathon Runner</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 to-purple-900 text-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-5xl md:text-6xl font-black gradient-text bg-gradient-to-r from-purple-400 to-pink-400 mb-2"
+                        style="-webkit-text-fill-color: transparent;">10K+</div>
+                    <p class="text-xl text-gray-300">Active Users</p>
+                </div>
+                <div>
+                    <div class="text-5xl md:text-6xl font-black gradient-text bg-gradient-to-r from-blue-400 to-teal-400 mb-2"
+                        style="-webkit-text-fill-color: transparent;">50K+</div>
+                    <p class="text-xl text-gray-300">Meal Plans Generated</p>
+                </div>
+                <div>
+                    <div class="text-5xl md:text-6xl font-black gradient-text bg-gradient-to-r from-green-400 to-blue-400 mb-2"
+                        style="-webkit-text-fill-color: transparent;">98%</div>
+                    <p class="text-xl text-gray-300">User Satisfaction</p>
+                </div>
+                <div>
+                    <div class="text-5xl md:text-6xl font-black gradient-text bg-gradient-to-r from-yellow-400 to-orange-400 mb-2"
+                        style="-webkit-text-fill-color: transparent;">24/7</div>
+                    <p class="text-xl text-gray-300">AI Availability</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section
+        class="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full filter blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full filter blur-3xl animate-pulse"
+                style="animation-delay: 1s;"></div>
+        </div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <h2 class="text-4xl md:text-6xl font-black mb-6 leading-tight">
+                Ready to Transform Your Health?
+            </h2>
+            <p class="text-xl md:text-2xl mb-12 text-purple-100 max-w-3xl mx-auto leading-relaxed">
+                Join thousands who've already discovered the power of AI-driven health optimization.
+                Your personalized journey starts with a single click.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-8">
+                <a href="/login"
+                    class="bg-white text-purple-600 px-12 py-6 rounded-full text-xl font-black hover:shadow-2xl transition transform hover:scale-105 pulse-glow inline-block">
+                    🚀 Get Started Free — No Credit Card
+                </a>
+                <button
+                    class="dark-glass-effect px-12 py-6 rounded-full text-xl font-bold hover:shadow-lg transition transform hover:scale-105">
+                    📖 Learn More
+                </button>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-6 text-lg text-purple-100">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-6 h-6 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span>Free Forever Plan</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <svg class="w-6 h-6 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span>Setup in 60 Seconds</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <svg class="w-6 h-6 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span>Cancel Anytime</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div class="col-span-2">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center">
+                            <span class="text-white text-2xl">🧞</span>
+                        </div>
+                        <span class="text-2xl font-bold text-white">Nutri-Genie</span>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed max-w-md">
+                        Your AI-powered personal health consultant. Built with Gemini AI, Node.js, and MongoDB
+                        to deliver hyper-personalized health insights and long-term progress tracking.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Product</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="hover:text-purple-400 transition">Features</a></li>
+                        <li><a href="#tech" class="hover:text-purple-400 transition">Technology</a></li>
+                        <li><a href="#how-it-works" class="hover:text-purple-400 transition">How It Works</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Pricing</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-purple-400 transition">About Us</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Blog</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Careers</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
+                <p>&copy; 2025 Nutri-Genie. All rights reserved. Powered by Gemini 1.5 Flash AI.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Health Profile - Nutri-Genie</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center">
+                        <span class="text-2xl">🧞</span>
+                    </div>
+                    <span class="text-xl font-bold gradient-text">Nutri-Genie</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-600">Welcome, <strong>
+                            <%= user.name %>
+                        </strong></span>
+                    <a href="/dashboard" class="text-purple-600 hover:text-purple-800 font-medium">Dashboard</a>
+                    <a href="/logout" class="text-gray-500 hover:text-gray-700">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-black text-gray-900 mb-4">
+                Let's Get to Know <span class="gradient-text">You</span>
+            </h1>
+            <p class="text-xl text-gray-600">
+                Tell us about yourself so we can create your personalized health plan
+            </p>
+        </div>
+
+        <form action="/generate" method="POST" class="bg-white rounded-3xl shadow-xl p-8 md:p-12">
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <!-- Age -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Age</label>
+                    <input type="number" name="age" required min="15" max="100"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition"
+                        placeholder="25">
+                </div>
+
+                <!-- Weight -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Weight (kg)</label>
+                    <input type="number" name="weight" required min="30" max="300" step="0.1"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition"
+                        placeholder="70">
+                </div>
+
+                <!-- Height -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Height (cm)</label>
+                    <input type="number" name="height" required min="100" max="250"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition"
+                        placeholder="175">
+                </div>
+
+                <!-- Gender -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Gender</label>
+                    <select name="gender" required
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition">
+                        <option value="">Select gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Activity Level -->
+            <div class="mb-8">
+                <label class="block text-gray-700 font-semibold mb-3">Activity Level</label>
+                <div class="grid md:grid-cols-5 gap-3">
+                    <label class="relative cursor-pointer">
+                        <input type="radio" name="activityLevel" value="sedentary" required class="peer sr-only">
+                        <div
+                            class="p-4 border-2 border-gray-300 rounded-lg text-center peer-checked:border-purple-500 peer-checked:bg-purple-50 transition">
+                            <div class="text-2xl mb-1">🛋️</div>
+                            <div class="text-sm font-semibold">Sedentary</div>
+                            <div class="text-xs text-gray-500">Little/no exercise</div>
+                        </div>
+                    </label>
+
+                    <label class="relative cursor-pointer">
+                        <input type="radio" name="activityLevel" value="light" required class="peer sr-only">
+                        <div
+                            class="p-4 border-2 border-gray-300 rounded-lg text-center peer-checked:border-purple-500 peer-checked:bg-purple-50 transition">
+                            <div class="text-2xl mb-1">🚶</div>
+                            <div class="text-sm font-semibold">Light</div>
+                            <div class="text-xs text-gray-500">1-3 days/week</div>
+                        </div>
+                    </label>
+
+                    <label class="relative cursor-pointer">
+                        <input type="radio" name="activityLevel" value="moderate" required class="peer sr-only">
+                        <div
+                            class="p-4 border-2 border-gray-300 rounded-lg text-center peer-checked:border-purple-500 peer-checked:bg-purple-50 transition">
+                            <div class="text-2xl mb-1">🏃</div>
+                            <div class="text-sm font-semibold">Moderate</div>
+                            <div class="text-xs text-gray-500">3-5 days/week</div>
+                        </div>
+                    </label>
+
+                    <label class="relative cursor-pointer">
+                        <input type="radio" name="activityLevel" value="active" required class="peer sr-only">
+                        <div
+                            class="p-4 border-2 border-gray-300 rounded-lg text-center peer-checked:border-purple-500 peer-checked:bg-purple-50 transition">
+                            <div class="text-2xl mb-1">💪</div>
+                            <div class="text-sm font-semibold">Active</div>
+                            <div class="text-xs text-gray-500">6-7 days/week</div>
+                        </div>
+                    </label>
+
+                    <label class="relative cursor-pointer">
+                        <input type="radio" name="activityLevel" value="very_active" required class="peer sr-only">
+                        <div
+                            class="p-4 border-2 border-gray-300 rounded-lg text-center peer-checked:border-purple-500 peer-checked:bg-purple-50 transition">
+                            <div class="text-2xl mb-1">🏋️</div>
+                            <div class="text-sm font-semibold">Very Active</div>
+                            <div class="text-xs text-gray-500">Daily + physical job</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Goal Type -->
+            <div class="mb-8">
+                <label class="block text-gray-700 font-semibold mb-3">Fitness Goal</label>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <label class="relative cursor-pointer">
+                        <input type="radio" name="goalType" value="weight_loss" required class="peer sr-only">
+                        <div
+                            class="p-6 border-2 border-gray-300 rounded-lg peer-checked:border-purple-500 peer-checked:bg-purple-50 transition">
+                            <div class="text-4xl mb-2">🔥</div>
+                            <div class="font-bold text-lg mb-1">Weight Loss</div>
+                            <div class="text-sm text-gray-600">Reduce body fat, get lean</div>
+                        </div>
+                    </label>
+
+                    <label class="relative cursor-pointer">
+                        <input type="radio" name="goalType" value="muscle_gain" required class="peer sr-only">
+                        <div
+                            class="p-6 border-2 border-gray-300 rounded-lg peer-checked:border-purple-500 peer-checked:bg-purple-50 transition">
+                            <div class="text-4xl mb-2">💪</div>
+                            <div class="font-bold text-lg mb-1">Muscle Gain</div>
+                            <div class="text-sm text-gray-600">Build muscle, get stronger</div>
+                        </div>
+                    </label>
+
+                    <label class="relative cursor-pointer">
+                        <input type="radio" name="goalType" value="maintain" required class="peer sr-only">
+                        <div
+                            class="p-6 border-2 border-gray-300 rounded-lg peer-checked:border-purple-500 peer-checked:bg-purple-50 transition">
+                            <div class="text-4xl mb-2">⚖️</div>
+                            <div class="font-bold text-lg mb-1">Maintain</div>
+                            <div class="text-sm text-gray-600">Stay healthy, balanced</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Allergies -->
+            <div class="mb-8">
+                <label class="block text-gray-700 font-semibold mb-2">Allergies / Dietary Restrictions</label>
+                <input type="text" name="allergies"
+                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition"
+                    placeholder="e.g., Peanuts, Dairy, Gluten (separate with commas)">
+                <p class="text-sm text-gray-500 mt-2">Optional - Leave blank if none</p>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitBtn"
+                class="w-full gradient-bg text-white py-5 rounded-lg font-bold text-xl hover:shadow-2xl transition transform hover:scale-105">
+                🚀 Generate My Personalized Plan
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.querySelector('form');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', (e) => {
+            submitBtn.innerHTML = '⏳ Generating your plan...';
+            submitBtn.disabled = true;
+        });
+    </script>
+</body>
+
+</html>
