@@ -129,168 +129,108 @@
                 <% if (allergies && allergies.length> 0) { %>
                     <div class="bg-yellow-100 px-4 py-2 rounded-lg">
                         <span class="text-sm font-semibold text-yellow-800">🚫 Avoiding: <%= allergies.join(', ') %></span>
+                    </div>
+                    <% } %>
                 </div>
-                <% } %>
             </div>
-            
-            <div class="grid md:grid-cols-2 gap-6">
-                <!-- Breakfast -->
-                <div class="border-2 border-purple-200 rounded-xl p-6 hover:shadow-lg transition">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900">☀️ Breakfast</h3>
-                        <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full font-semibold text-sm">
-                            <%= mealPlan.breakfast.calories %> cal
-                        </span>
-                    </div>
-                    <h4 class="text-lg font-bold text-gray-700 mb-2"><%= mealPlan.breakfast.name %></h4>
-                    <p class="text-gray-600 mb-4"><%= mealPlan.breakfast.description %></p>
-                    
-                    <% if (mealPlan.breakfast.ingredients) { %>
-                    <div class="mb-4">
-                        <p class="text-sm font-semibold text-gray-700 mb-2">🥘 Ingredients:</p>
-                        <ul class="text-sm text-gray-600 list-disc list-inside space-y-1">
-                            <% mealPlan.breakfast.ingredients.forEach(ingredient => { %>
-                            <li><%= ingredient %></li>
-                            <% }) %>
-                        </ul>
-                    </div>
-                    <% } %>
-                    
-                    <% if (mealPlan.breakfast.preparation) { %>
-                    <div class="mb-4 p-3 bg-purple-50 rounded-lg">
-                        <p class="text-sm font-semibold text-purple-700 mb-1">👨‍🍳 Preparation:</p>
-                        <p class="text-sm text-gray-700"><%= mealPlan.breakfast.preparation %></p>
-                    </div>
-                    <% } %>
-                    
-                    <div class="grid grid-cols-3 gap-2 text-sm">
-                        <div class="bg-gray-50 rounded p-2 text-center">
-                            <div class="font-bold text-gray-700"><%= mealPlan.breakfast.protein %></div>
-                            <div class="text-gray-500">Protein</div>
+
+            <div class="space-y-8">
+                <% Object.keys(mealPlan).forEach((day, index) => { %>
+                    <div class="border-2 border-purple-100 rounded-2xl overflow-hidden">
+                        <div class="bg-purple-50 px-6 py-4 border-b border-purple-100 flex justify-between items-center">
+                            <h3 class="text-xl font-bold text-purple-800 capitalize">Day <%= index + 1 %></h3>
+                            <span class="text-sm font-medium text-purple-600 bg-white px-3 py-1 rounded-full shadow-sm">
+                                <%= mealPlan[day].breakfast.calories + mealPlan[day].lunch.calories + mealPlan[day].dinner.calories + (mealPlan[day].snacks.calories || 0) %> kcal
+                            </span>
                         </div>
-                        <div class="bg-gray-50 rounded p-2 text-center">
-                            <div class="font-bold text-gray-700"><%= mealPlan.breakfast.carbs %></div>
-                            <div class="text-gray-500">Carbs</div>
-                        </div>
-                        <div class="bg-gray-50 rounded p-2 text-center">
-                            <div class="font-bold text-gray-700"><%= mealPlan.breakfast.fats %></div>
-                            <div class="text-gray-500">Fats</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Lunch -->
-                <div class="border-2 border-pink-200 rounded-xl p-6 hover:shadow-lg transition">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900">🌞 Lunch</h3>
-                        <span class="px-3 py-1 bg-pink-100 text-pink-700 rounded-full font-semibold text-sm">
-                            <%= mealPlan.lunch.calories %> cal
-                        </span>
-                    </div>
-                    <h4 class="text-lg font-bold text-gray-700 mb-2"><%= mealPlan.lunch.name %></h4>
-                    <p class="text-gray-600 mb-4"><%= mealPlan.lunch.description %></p>
-                    
-                    <% if (mealPlan.lunch.ingredients) { %>
-                    <div class="mb-4">
-                        <p class="text-sm font-semibold text-gray-700 mb-2">🥘 Ingredients:</p>
-                        <ul class="text-sm text-gray-600 list-disc list-inside space-y-1">
-                            <% mealPlan.lunch.ingredients.forEach(ingredient => { %>
-                            <li><%= ingredient %></li>
-                            <% }) %>
-                        </ul>
-                    </div>
-                    <% } %>
-                    
-                    <% if (mealPlan.lunch.preparation) { %>
-                    <div class="mb-4 p-3 bg-pink-50 rounded-lg">
-                        <p class="text-sm font-semibold text-pink-700 mb-1">👨‍🍳 Preparation:</p>
-                        <p class="text-sm text-gray-700"><%= mealPlan.lunch.preparation %></p>
-                    </div>
-                    <% } %>
-                    
-                    <div class="grid grid-cols-3 gap-2 text-sm">
-                        <div class="bg-gray-50 rounded p-2 text-center">
-                            <div class="font-bold text-gray-700"><%= mealPlan.lunch.protein %></div>
-                            <div class="text-gray-500">Protein</div>
-                        </div>
-                        <div class="bg-gray-50 rounded p-2 text-center">
-                            <div class="font-bold text-gray-700"><%= mealPlan.lunch.carbs %></div>
-                            <div class="text-gray-500">Carbs</div>
-                        </div>
-                        <div class="bg-gray-50 rounded p-2 text-center">
-                            <div class="font-bold text-gray-700"><%= mealPlan.lunch.fats %></div>
-                            <div class="text-gray-500">Fats</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Dinner -->
-                <div class="border-2 border-blue-200 rounded-xl p-6 hover:shadow-lg transition">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900">🌙 Dinner</h3>
-                        <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full font-semibold text-sm">
-                            <%= mealPlan.dinner.calories %> cal
-                        </span>
-                    </div>
-                    <h4 class="text-lg font-bold text-gray-700 mb-2"><%= mealPlan.dinner.name %></h4>
-                    <p class="text-gray-600 mb-4"><%= mealPlan.dinner.description %></p>
-                    
-                    <% if (mealPlan.dinner.ingredients) { %>
-                    <div class="mb-4">
-                        <p class="text-sm font-semibold text-gray-700 mb-2">🥘 Ingredients:</p>
-                        <ul class="text-sm text-gray-600 list-disc list-inside space-y-1">
-                            <% mealPlan.dinner.ingredients.forEach(ingredient => { %>
-                            <li><%= ingredient %></li>
-                            <% }) %>
-                        </ul>
-                    </div>
-                    <% } %>
-                    
-                    <% if (mealPlan.dinner.preparation) { %>
-                    <div class="mb-4 p-3 bg-blue-50 rounded-lg">
-                        <p class="text-sm font-semibold text-blue-700 mb-1">👨‍🍳 Preparation:</p>
-                        <p class="text-sm text-gray-700"><%= mealPlan.dinner.preparation %></p>
-                    </div>
-                    <% } %>
-                    
-                    <div class="grid grid-cols-3 gap-2 text-sm">
-                        <div class="bg-gray-50 rounded p-2 text-center">
-                            <div class="font-bold text-gray-700"><%= mealPlan.dinner.protein %></div>
-                            <div class="text-gray-500">Protein</div>
-                        </div>
-                        <div class="bg-gray-50 rounded p-2 text-center">
-                            <div class="font-bold text-gray-700"><%= mealPlan.dinner.carbs %></div>
-                            <div class="text-gray-500">Carbs</div>
-                        </div>
-                        <div class="bg-gray-50 rounded p-2 text-center">
-                            <div class="font-bold text-gray-700"><%= mealPlan.dinner.fats %></div>
-                            <div class="text-gray-500">Fats</div>
+                        <div class="p-6 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <!-- Breakfast -->
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-2 text-yellow-600 font-semibold">
+                                    <span>🌅</span> <span>Breakfast</span>
+                                </div>
+                                <div class="bg-yellow-50 rounded-xl p-4 h-full">
+                                    <h4 class="font-bold text-gray-900 mb-1"><%= mealPlan[day].breakfast.name %></h4>
+                                    <p class="text-xs text-gray-500 mb-3"><%= mealPlan[day].breakfast.description %></p>
+                                    <div class="flex flex-wrap gap-1 mb-3">
+                                        <% mealPlan[day].breakfast.ingredients.forEach(ing => { %>
+                                            <span class="text-xs bg-white px-2 py-1 rounded border border-yellow-100 text-gray-600"><%= ing %></span>
+                                        <% }) %>
+                                    </div>
+                                    <div class="text-xs text-gray-500 space-y-1 border-t border-yellow-200 pt-2">
+                                        <div class="flex justify-between"><span>Protein:</span> <span class="font-medium"><%= mealPlan[day].breakfast.protein %></span></div>
+                                        <div class="flex justify-between"><span>Carbs:</span> <span class="font-medium"><%= mealPlan[day].breakfast.carbs %></span></div>
+                                        <div class="flex justify-between"><span>Fats:</span> <span class="font-medium"><%= mealPlan[day].breakfast.fats %></span></div>
+                                        <div class="flex justify-between font-semibold text-yellow-700 mt-1"><span>Calories:</span> <span><%= mealPlan[day].breakfast.calories %></span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Lunch -->
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-2 text-green-600 font-semibold">
+                                    <span>☀️</span> <span>Lunch</span>
+                                </div>
+                                <div class="bg-green-50 rounded-xl p-4 h-full">
+                                    <h4 class="font-bold text-gray-900 mb-1"><%= mealPlan[day].lunch.name %></h4>
+                                    <p class="text-xs text-gray-500 mb-3"><%= mealPlan[day].lunch.description %></p>
+                                    <div class="flex flex-wrap gap-1 mb-3">
+                                        <% mealPlan[day].lunch.ingredients.forEach(ing => { %>
+                                            <span class="text-xs bg-white px-2 py-1 rounded border border-green-100 text-gray-600"><%= ing %></span>
+                                        <% }) %>
+                                    </div>
+                                    <div class="text-xs text-gray-500 space-y-1 border-t border-green-200 pt-2">
+                                        <div class="flex justify-between"><span>Protein:</span> <span class="font-medium"><%= mealPlan[day].lunch.protein %></span></div>
+                                        <div class="flex justify-between"><span>Carbs:</span> <span class="font-medium"><%= mealPlan[day].lunch.carbs %></span></div>
+                                        <div class="flex justify-between"><span>Fats:</span> <span class="font-medium"><%= mealPlan[day].lunch.fats %></span></div>
+                                        <div class="flex justify-between font-semibold text-green-700 mt-1"><span>Calories:</span> <span><%= mealPlan[day].lunch.calories %></span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dinner -->
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-2 text-blue-600 font-semibold">
+                                    <span>🌙</span> <span>Dinner</span>
+                                </div>
+                                <div class="bg-blue-50 rounded-xl p-4 h-full">
+                                    <h4 class="font-bold text-gray-900 mb-1"><%= mealPlan[day].dinner.name %></h4>
+                                    <p class="text-xs text-gray-500 mb-3"><%= mealPlan[day].dinner.description %></p>
+                                    <div class="flex flex-wrap gap-1 mb-3">
+                                        <% mealPlan[day].dinner.ingredients.forEach(ing => { %>
+                                            <span class="text-xs bg-white px-2 py-1 rounded border border-blue-100 text-gray-600"><%= ing %></span>
+                                        <% }) %>
+                                    </div>
+                                    <div class="text-xs text-gray-500 space-y-1 border-t border-blue-200 pt-2">
+                                        <div class="flex justify-between"><span>Protein:</span> <span class="font-medium"><%= mealPlan[day].dinner.protein %></span></div>
+                                        <div class="flex justify-between"><span>Carbs:</span> <span class="font-medium"><%= mealPlan[day].dinner.carbs %></span></div>
+                                        <div class="flex justify-between"><span>Fats:</span> <span class="font-medium"><%= mealPlan[day].dinner.fats %></span></div>
+                                        <div class="flex justify-between font-semibold text-blue-700 mt-1"><span>Calories:</span> <span><%= mealPlan[day].dinner.calories %></span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Snacks -->
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-2 text-purple-600 font-semibold">
+                                    <span>🍎</span> <span>Snacks</span>
+                                </div>
+                                <div class="bg-purple-50 rounded-xl p-4 h-full">
+                                    <h4 class="font-bold text-gray-900 mb-1"><%= mealPlan[day].snacks.name %></h4>
+                                    <p class="text-xs text-gray-500 mb-3"><%= mealPlan[day].snacks.description %></p>
+                                    <div class="flex flex-wrap gap-1 mb-3">
+                                        <% mealPlan[day].snacks.items.forEach(item => { %>
+                                            <span class="text-xs bg-white px-2 py-1 rounded border border-purple-100 text-gray-600"><%= item %></span>
+                                        <% }) %>
+                                    </div>
+                                    <div class="text-xs text-gray-500 space-y-1 border-t border-purple-200 pt-2">
+                                        <div class="flex justify-between font-semibold text-purple-700 mt-1"><span>Calories:</span> <span><%= mealPlan[day].snacks.calories %></span></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Snacks -->
-                <div class="border-2 border-green-200 rounded-xl p-6 hover:shadow-lg transition">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900">🍎 Snacks</h3>
-                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full font-semibold text-sm">
-                            <%= mealPlan.snacks.calories %> cal
-                        </span>
-                    </div>
-                    <h4 class="text-lg font-bold text-gray-700 mb-2"><%= mealPlan.snacks.name %></h4>
-                    <p class="text-gray-600 mb-3"><%= mealPlan.snacks.description %></p>
-                    
-                    <% if (mealPlan.snacks.items) { %>
-                    <div class="bg-green-50 rounded-lg p-3">
-                        <p class="text-sm font-semibold text-green-700 mb-2">Options:</p>
-                        <ul class="text-sm text-gray-700 space-y-1">
-                            <% mealPlan.snacks.items.forEach(item => { %>
-                            <li>• <%= item %></li>
-                            <% }) %>
-                        </ul>
-                    </div>
-                    <% } %>
-                </div>
+                <% }) %>
             </div>
         </div>
         

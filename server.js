@@ -295,7 +295,7 @@ app.post('/generate', async (req, res) => {
         if (model) {
             try {
                 // Generate Meal Plan
-                const mealPrompt = `You are a professional nutritionist creating a HIGHLY PERSONALIZED meal plan.
+                const mealPrompt = `You are a professional nutritionist creating a HIGHLY PERSONALIZED 7-DAY meal plan.
 
 USER PROFILE:
 - Age: ${age} years
@@ -326,62 +326,36 @@ ${allergyList.length > 0 ? allergyList.map(allergy => {
                 }).join('\n') : '- No dietary restrictions'}
 
 IMPORTANT: 
-1. Create a UNIQUE meal plan based on this user's exact profile
+1. Create a UNIQUE 7-DAY meal plan based on this user's exact profile
 2. DO NOT use generic/template meals
 3. NEVER include any restricted foods mentioned above
-4. If user cannot eat NONVEG/meat, suggest ONLY vegetarian protein sources (paneer, tofu, legumes, beans, lentils, chickpeas, etc.)
+4. If user cannot eat NONVEG/meat, suggest ONLY vegetarian protein sources
+5. Ensure variety across the 7 days
 
-For ${goalType === 'weight_loss' ? 'weight loss, focus on high protein, moderate carbs, healthy fats' : goalType === 'muscle_gain' ? 'muscle gain, focus on high protein, high carbs, moderate fats with VEGETARIAN sources if restricted' : 'maintenance, balanced macros'}
+For ${goalType === 'weight_loss' ? 'weight loss, focus on high protein, moderate carbs, healthy fats' : goalType === 'muscle_gain' ? 'muscle gain, focus on high protein, high carbs, moderate fats' : 'maintenance, balanced macros'}
 
 Provide a JSON response with this EXACT structure (NO markdown, ONLY JSON):
 {
-  "breakfast": {
-    "name": "Specific meal name",
-    "description": "Detailed description with main ingredients",
-    "ingredients": ["ingredient 1", "ingredient 2", "ingredient 3"],
-    "preparation": "Brief preparation steps",
-    "calories": number,
-    "protein": "Xg",
-    "carbs": "Xg",
-    "fats": "Xg"
+  "day1": {
+    "breakfast": { "name": "...", "description": "...", "ingredients": ["..."], "preparation": "...", "calories": 0, "protein": "...", "carbs": "...", "fats": "..." },
+    "lunch": { "name": "...", "description": "...", "ingredients": ["..."], "preparation": "...", "calories": 0, "protein": "...", "carbs": "...", "fats": "..." },
+    "dinner": { "name": "...", "description": "...", "ingredients": ["..."], "preparation": "...", "calories": 0, "protein": "...", "carbs": "...", "fats": "..." },
+    "snacks": { "name": "...", "description": "...", "items": ["..."], "calories": 0 }
   },
-  "lunch": {
-    "name": "Specific meal name",
-    "description": "Detailed description with main ingredients",
-    "ingredients": ["ingredient 1", "ingredient 2", "ingredient 3"],
-    "preparation": "Brief preparation steps",
-    "calories": number,
-    "protein": "Xg",
-    "carbs": "Xg",
-    "fats": "Xg"
-  },
-  "dinner": {
-    "name": "Specific meal name",
-    "description": "Detailed description with main ingredients",
-    "ingredients": ["ingredient 1", "ingredient 2", "ingredient 3"],
-    "preparation": "Brief preparation steps",
-    "calories": number,
-    "protein": "Xg",
-    "carbs": "Xg",
-    "fats": "Xg"
-  },
-  "snacks": {
-    "name": "2-3 specific snack options",
-    "description": "Detailed snack suggestions",
-    "items": ["snack 1", "snack 2"],
-    "calories": number
-  }
+  "day2": { ... same structure ... },
+  "day3": { ... same structure ... },
+  "day4": { ... same structure ... },
+  "day5": { ... same structure ... },
+  "day6": { ... same structure ... },
+  "day7": { ... same structure ... }
 }
 
 CRITICAL REQUIREMENTS: 
-- Total calories MUST equal ${targetCalories} (±50 calories)
-- STRICTLY AVOID all listed restrictions above
-- If NONVEG restriction: Use ONLY vegetarian proteins (paneer, tofu, beans, lentils, chickpeas, tempeh, seitan)
-- Make meals SPECIFIC and VARIED (not generic)
-- Include realistic portion sizes
-- Return ONLY valid JSON (no extra text)`;
+- Total calories per day MUST equal ${targetCalories} (±50 calories)
+- STRICTLY AVOID all listed restrictions
+- Return ONLY valid JSON`;
 
-                console.log('🤖 Generating meal plan with Gemini AI...');
+                console.log('🤖 Generating 7-day meal plan with Gemini AI...');
                 console.log('📋 User restrictions:', allergyList.length > 0 ? allergyList.join(', ') : 'None');
 
                 const mealResult = await model.generateContent(mealPrompt);
@@ -431,286 +405,18 @@ Include 5-7 exercises suitable for the goal.`;
 
             } catch (aiError) {
                 console.error('AI generation error:', aiError);
-                // Continue with fallback data
+                throw new Error('AI generation failed');
             }
         }
 
-        // Fallback data if AI fails or no API key
+        // Check if plans were generated
         if (!mealPlan) {
-            console.log('⚠️ Using fallback meal plans');
-
-            // Check if user requires vegetarian meals
-            const isVegetarian = allergyList.some(a => {
-                const lower = a.toLowerCase();
-                return lower.includes('nonveg') || lower.includes('non-veg') ||
-                    lower.includes('non veg') || lower.includes('meat') ||
-                    lower.includes('chicken') || lower.includes('fish') ||
-                    lower.includes('beef') || lower.includes('pork');
-            });
-
-            if (isVegetarian) {
-                console.log('🥬 User is VEGETARIAN - using vegetarian fallback meals');
-
-                // Vegetarian meal plans based on goal
-                const vegetarianMeals = {
-                    weight_loss: {
-                        breakfast: {
-                            name: "High-Protein Tofu Scramble",
-                            description: "Scrambled tofu with spinach, bell peppers, and whole grain toast",
-                            ingredients: ["200g firm tofu", "1 cup spinach", "1/2 cup bell peppers", "1 slice whole grain toast", "Turmeric", "Black salt"],
-                            preparation: "Crumble tofu, sauté with spices and vegetables, serve with toast",
-                            calories: Math.round(targetCalories * 0.25),
-                            protein: "24g",
-                            carbs: "28g",
-                            fats: "10g"
-                        },
-                        lunch: {
-                            name: "Chickpea & Quinoa Power Bowl",
-                            description: "Roasted chickpeas with quinoa, cucumber, tomatoes, and tahini dressing",
-                            ingredients: ["1 cup cooked chickpeas", "1/2 cup quinoa", "Mixed salad vegetables", "2 tbsp tahini", "Lemon juice"],
-                            preparation: "Roast chickpeas, cook quinoa, combine with fresh vegetables and tahini dressing",
-                            calories: Math.round(targetCalories * 0.35),
-                            protein: "22g",
-                            carbs: "45g",
-                            fats: "14g"
-                        },
-                        dinner: {
-                            name: "Grilled Paneer with Roasted Vegetables",
-                            description: "Tandoori-spiced grilled paneer with cauliflower rice and broccoli",
-                            ingredients: ["150g paneer", "2 cups cauliflower rice", "1 cup broccoli", "Tandoori spices"],
-                            preparation: "Marinate and grill paneer, roast vegetables, prepare cauliflower rice",
-                            calories: Math.round(targetCalories * 0.30),
-                            protein: "26g",
-                            carbs: "22g",
-                            fats: "16g"
-                        },
-                        snacks: {
-                            name: "Protein-Rich Vegetarian Snacks",
-                            description: "Roasted chickpeas, mixed nuts, or hummus with veggies",
-                            items: ["Roasted chickpeas (100g)", "Mixed nuts (30g)", "Hummus with carrot sticks"],
-                            calories: Math.round(targetCalories * 0.10)
-                        }
-                    },
-                    muscle_gain: {
-                        breakfast: {
-                            name: "Protein-Loaded Paneer Pancakes",
-                            description: "High-protein pancakes made with paneer, oats, and banana",
-                            ingredients: ["100g grated paneer", "1 cup oats", "2 eggs (or flax eggs)", "1 banana", "2 tbsp peanut butter", "Honey"],
-                            preparation: "Blend oats, mix with paneer and banana, cook pancakes, top with peanut butter",
-                            calories: Math.round(targetCalories * 0.25),
-                            protein: "32g",
-                            carbs: "58g",
-                            fats: "18g"
-                        },
-                        lunch: {
-                            name: "Lentil & Sweet Potato Power Bowl",
-                            description: "Red lentil dal with roasted sweet potato, brown rice, and avocado",
-                            ingredients: ["1 cup cooked red lentils", "1 large sweet potato", "1 cup brown rice", "1/2 avocado", "Indian spices"],
-                            preparation: "Cook lentils with spices, roast sweet potato, prepare rice, combine with avocado",
-                            calories: Math.round(targetCalories * 0.35),
-                            protein: "28g",
-                            carbs: "75g",
-                            fats: "18g"
-                        },
-                        dinner: {
-                            name: "Tofu Stir-Fry with Noodles",
-                            description: "Crispy tofu with whole wheat noodles and Asian vegetables",
-                            ingredients: ["250g firm tofu", "150g whole wheat noodles", "Mixed stir-fry vegetables", "Soy sauce", "Sesame oil"],
-                            preparation: "Press and fry tofu until crispy, cook noodles, stir-fry vegetables, combine",
-                            calories: Math.round(targetCalories * 0.30),
-                            protein: "35g",
-                            carbs: "62g",
-                            fats: "20g"
-                        },
-                        snacks: {
-                            name: "High-Calorie Vegetarian Snacks",
-                            description: "Protein smoothie, trail mix, or peanut butter sandwich",
-                            items: ["Protein smoothie with banana & nuts (350 cal)", "Trail mix with dried fruits (250 cal)", "Almond butter sandwich"],
-                            calories: Math.round(targetCalories * 0.10)
-                        }
-                    },
-                    maintain: {
-                        breakfast: {
-                            name: "Vegetarian Oatmeal Power Bowl",
-                            description: "Steel-cut oats with chia seeds, berries, nuts, and plant protein",
-                            ingredients: ["1 cup oats", "1 tbsp chia seeds", "1/2 cup mixed berries", "20 almonds", "1 scoop plant protein", "Almond milk"],
-                            preparation: "Cook oats with chia seeds, top with berries, nuts, and protein powder",
-                            calories: Math.round(targetCalories * 0.25),
-                            protein: "22g",
-                            carbs: "50g",
-                            fats: "14g"
-                        },
-                        lunch: {
-                            name: "Mediterranean Falafel Wrap",
-                            description: "Homemade falafel wrap with hummus, tahini, and fresh vegetables",
-                            ingredients: ["Whole wheat wrap", "4 falafels", "3 tbsp hummus", "Mixed vegetables", "30g feta", "Tahini sauce"],
-                            preparation: "Prepare or heat falafels, spread hummus, add vegetables and feta, drizzle tahini",
-                            calories: Math.round(targetCalories * 0.35),
-                            protein: "24g",
-                            carbs: "52g",
-                            fats: "16g"
-                        },
-                        dinner: {
-                            name: "Paneer Tikka with Quinoa",
-                            description: "Marinated paneer tikka with vegetable quinoa pilaf",
-                            ingredients: ["180g paneer cubes", "1 cup quinoa", "Mixed vegetables", "Yogurt marinade", "Indian spices"],
-                            preparation: "Marinate and grill paneer, cook quinoa with vegetables and spices",
-                            calories: Math.round(targetCalories * 0.30),
-                            protein: "28g",
-                            carbs: "48g",
-                            fats: "15g"
-                        },
-                        snacks: {
-                            name: "Balanced Vegetarian Snacks",
-                            description: "Greek yogurt with fruit, veggie sticks with hummus, or smoothie",
-                            items: ["Greek yogurt with berries", "Carrot & cucumber with hummus", "Green smoothie with spinach & banana"],
-                            calories: Math.round(targetCalories * 0.10)
-                        }
-                    }
-                };
-
-                mealPlan = vegetarianMeals[goalType] || vegetarianMeals.maintain;
-
-            } else {
-                // Non-vegetarian meal plans (original fallbacks)
-                const goalSpecificMeals = {
-                    weight_loss: {
-                        breakfast: {
-                            name: "High-Protein Egg White Scramble",
-                            description: "Fluffy egg whites with spinach, tomatoes, and whole grain toast",
-                            ingredients: ["4 egg whites", "1 cup spinach", "1/2 cup cherry tomatoes", "1 slice whole grain toast"],
-                            preparation: "Scramble egg whites with vegetables, serve with toast",
-                            calories: Math.round(targetCalories * 0.25),
-                            protein: "25g",
-                            carbs: "30g",
-                            fats: "8g"
-                        },
-                        lunch: {
-                            name: "Grilled Chicken & Veggie Bowl",
-                            description: "Lean grilled chicken breast with quinoa and roasted vegetables",
-                            ingredients: ["150g chicken breast", "1/2 cup quinoa", "Mixed vegetables", "Lemon dressing"],
-                            preparation: "Grill chicken, cook quinoa, roast vegetables, combine",
-                            calories: Math.round(targetCalories * 0.35),
-                            protein: "40g",
-                            carbs: "35g",
-                            fats: "12g"
-                        },
-                        dinner: {
-                            name: "Baked Salmon with Cauliflower Rice",
-                            description: "Herb-crusted salmon with cauliflower rice and steamed broccoli",
-                            ingredients: ["180g salmon fillet", "2 cups cauliflower rice", "1 cup broccoli", "Herbs & lemon"],
-                            preparation: "Bake salmon with herbs, steam vegetables, prepare cauliflower rice",
-                            calories: Math.round(targetCalories * 0.30),
-                            protein: "38g",
-                            carbs: "20g",
-                            fats: "15g"
-                        },
-                        snacks: {
-                            name: "Low-Calorie Protein Snacks",
-                            description: "Greek yogurt, raw almonds, or apple slices",
-                            items: ["150g Greek yogurt", "15 almonds", "1 medium apple"],
-                            calories: Math.round(targetCalories * 0.10)
-                        }
-                    },
-                    muscle_gain: {
-                        breakfast: {
-                            name: "Power-Packed Protein Pancakes",
-                            description: "Protein pancakes with banana, peanut butter, and honey",
-                            ingredients: ["2 scoops protein powder", "2 eggs", "1 banana", "2 tbsp peanut butter", "Honey"],
-                            preparation: "Mix ingredients, cook pancakes, top with banana and peanut butter",
-                            calories: Math.round(targetCalories * 0.25),
-                            protein: "35g",
-                            carbs: "55g",
-                            fats: "18g"
-                        },
-                        lunch: {
-                            name: "Beef & Sweet Potato Power Bowl",
-                            description: "Lean beef with roasted sweet potato, brown rice, and avocado",
-                            ingredients: ["200g lean beef", "1 large sweet potato", "1 cup brown rice", "1/2 avocado"],
-                            preparation: "Grill beef, roast sweet potato, cook rice, combine with avocado",
-                            calories: Math.round(targetCalories * 0.35),
-                            protein: "45g",
-                            carbs: "68g",
-                            fats: "20g"
-                        },
-                        dinner: {
-                            name: "Chicken Pasta with Vegetables",
-                            description: "Grilled chicken with whole wheat pasta and mixed vegetables",
-                            ingredients: ["200g chicken breast", "150g whole wheat pasta", "Mixed vegetables", "Olive oil"],
-                            preparation: "Cook pasta, grill chicken, sauté vegetables, combine",
-                            calories: Math.round(targetCalories * 0.30),
-                            protein: "42g",
-                            carbs: "60g",
-                            fats: "16g"
-                        },
-                        snacks: {
-                            name: "High-Calorie Muscle Building Snacks",
-                            description: "Trail mix, protein shake, or nut butter sandwich",
-                            items: ["Protein shake (300 cal)", "Trail mix (200 cal)", "Nut butter sandwich"],
-                            calories: Math.round(targetCalories * 0.10)
-                        }
-                    },
-                    maintain: {
-                        breakfast: {
-                            name: "Balanced Oatmeal Bowl",
-                            description: "Steel-cut oats with berries, nuts, and honey",
-                            ingredients: ["1 cup oats", "1/2 cup mixed berries", "15 almonds", "1 tbsp honey", "Milk"],
-                            preparation: "Cook oats, top with berries, nuts, and honey",
-                            calories: Math.round(targetCalories * 0.25),
-                            protein: "18g",
-                            carbs: "48g",
-                            fats: "12g"
-                        },
-                        lunch: {
-                            name: "Mediterranean Chicken Wrap",
-                            description: "Grilled chicken wrap with hummus, vegetables, and feta",
-                            ingredients: ["Whole wheat wrap", "150g chicken", "2 tbsp hummus", "Vegetables", "30g feta"],
-                            preparation: "Grill chicken, spread hummus, add vegetables and feta, wrap",
-                            calories: Math.round(targetCalories * 0.35),
-                            protein: "38g",
-                            carbs: "45g",
-                            fats: "15g"
-                        },
-                        dinner: {
-                            name: "Balanced Stir-Fry",
-                            description: "Shrimp stir-fry with mixed vegetables and jasmine rice",
-                            ingredients: ["200g shrimp", "Mixed stir-fry vegetables", "1 cup jasmine rice", "Soy sauce"],
-                            preparation: "Stir-fry shrimp and vegetables, serve over rice",
-                            calories: Math.round(targetCalories * 0.30),
-                            protein: "32g",
-                            carbs: "50g",
-                            fats: "14g"
-                        },
-                        snacks: {
-                            name: "Balanced Healthy Snacks",
-                            description: "Fruit with yogurt, crackers with cheese, or smoothie",
-                            items: ["Greek yogurt with fruit", "Whole grain crackers with cheese", "Green smoothie"],
-                            calories: Math.round(targetCalories * 0.10)
-                        }
-                    }
-                };
-
-                mealPlan = goalSpecificMeals[goalType] || goalSpecificMeals.maintain;
-            }
-            // This brace closes the `if (!mealPlan)` block that was implicitly opened earlier.
-            // The instruction implies this block exists and needs closing here.
-            // Based on the provided edit, it seems there was an outer `if (!mealPlan)` block.
-            // However, the original code structure suggests the `if (isVegetarian)` block is the outer one.
-            // Assuming the instruction refers to a logical block that encompasses the meal plan generation.
-            // The most faithful interpretation given the instruction and the provided edit snippet is to add the brace here.
+            console.log('❌ Failed to generate meal plan');
+            throw new Error('Failed to generate meal plan');
         }
         if (!workoutPlan) {
-            workoutPlan = {
-                summary: `A balanced ${goalType.replace('_', ' ')} workout plan`,
-                exercises: [
-                    { name: "Warm-up", type: "cardio", sets: "N/A", reps: "5-10 min", rest: "N/A", notes: "Light cardio" },
-                    { name: "Squats", type: "strength", sets: "3", reps: "12-15", rest: "60s", notes: "Focus on form" },
-                    { name: "Push-ups", type: "strength", sets: "3", reps: "10-12", rest: "60s", notes: "Modify as needed" },
-                    { name: "Planks", type: "core", sets: "3", reps: "30-60s", rest: "45s", notes: "Keep core tight" },
-                    { name: "Cardio", type: "cardio", sets: "N/A", reps: "20-30 min", rest: "N/A", notes: "Moderate intensity" }
-                ],
-                weeklySchedule: "3-5 days per week"
-            };
+            console.log('❌ Failed to generate workout plan');
+            throw new Error('Failed to generate workout plan');
         }
 
         // Save to database
@@ -781,6 +487,30 @@ app.get('/dashboard', async (req, res) => {
         console.error('Dashboard error:', error);
         res.status(500).send('Error loading dashboard');
     }
+});
+
+// TEMPORARY TEST ROUTE
+app.get('/test-result', (req, res) => {
+    const mockMealPlan = {};
+    for (let i = 1; i <= 7; i++) {
+        mockMealPlan[`day${i}`] = {
+            breakfast: { name: `Day ${i} Breakfast`, description: "Tasty breakfast", ingredients: ["Egg", "Toast"], calories: 400, protein: "20g", carbs: "30g", fats: "10g" },
+            lunch: { name: `Day ${i} Lunch`, description: "Healthy lunch", ingredients: ["Chicken", "Rice"], calories: 600, protein: "40g", carbs: "50g", fats: "15g" },
+            dinner: { name: `Day ${i} Dinner`, description: "Light dinner", ingredients: ["Salad", "Tofu"], calories: 500, protein: "25g", carbs: "20g", fats: "20g" },
+            snacks: { name: `Day ${i} Snack`, description: "Quick snack", items: ["Apple"], calories: 100 }
+        };
+    }
+
+    res.render('result', {
+        user: { name: "Test User" },
+        bmr: 1500,
+        tdee: 2000,
+        targetCalories: 2000,
+        goalType: "maintain",
+        mealPlan: mockMealPlan,
+        workoutPlan: { summary: "Test Workout", weeklySchedule: "3x week", exercises: [] },
+        allergies: []
+    });
 });
 
 // ---------- API ENDPOINT (optional, for AJAX requests) ----------
