@@ -13,6 +13,9 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy (Required for Render/Heroku to handle secure cookies correctly)
+app.set('trust proxy', 1);
+
 // ============================================
 // MIDDLEWARE CONFIGURATION
 // ============================================
